@@ -4,30 +4,38 @@ package com.example.demo.controllers;
 /*-Presentation == controller package folder + DTO package
 -Service == service package folder
 -persistence == Repositories(Interface) package folder + Entities packages */
-//CRUD operations
+
 //GET / employee
 //POST /employee
 //DELETE / employee /{id}
 
 import com.example.demo.dto.EmployeeDTO;
+import com.example.demo.services.EmployeeService;
 import jakarta.websocket.server.PathParam;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
+@RequestMapping(path="/employee")
 public class EmployeeController {
 
-    @GetMapping(path="/employee") 
+    private final EmployeeService employeeService;
+
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
+
+    @GetMapping
     public EmployeeDTO getEmployeesbasic() {
 
         return new EmployeeDTO(12, "Tathagat", LocalDate.of(2024, 5, 15), true);
     }
 
      // pass the path varibale
-    @GetMapping(path="/employee/{id}")
+    @GetMapping(path="/{id}")
     public EmployeeDTO getEmployees(@PathVariable("id") int employeeid) {
 
         return new EmployeeDTO(employeeid, "Tathagat", LocalDate.of(2024, 5, 15), true);
@@ -35,9 +43,30 @@ public class EmployeeController {
 
     // check the path
     //http://localhost:8082/employee/pathParam?sortBy=age
-    @GetMapping(path="/employee/pathParam")
+    @GetMapping(path="/pathParam")
     public String getEmployeesPathParam(@PathParam("sortBy") String sortBy) {
         return "Hello "+ sortBy ;
+    }
+
+    @GetMapping(path="/service/{id}")
+    public EmployeeDTO getEmployeesById(@PathVariable("id") int employeeid) {
+
+        return employeeService.getEmployeeById(employeeid);
+    }
+
+    @GetMapping(path = "/getall")
+    public List<EmployeeDTO> getAllEmployees() {
+        return employeeService.getAllEmployee();
+    }
+
+    @PostMapping(path="/postcall")
+    public EmployeeDTO createNewEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        return employeeService.createNewEmployee(employeeDTO);
+    }
+
+    @DeleteMapping(path = "/delete/{id}")
+    public boolean deleteEmployeeById(@PathVariable int id) {
+        return employeeService.deleteEmployeeById(id);
     }
 
 

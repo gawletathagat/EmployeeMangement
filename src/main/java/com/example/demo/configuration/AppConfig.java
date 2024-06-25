@@ -3,6 +3,7 @@ package com.example.demo.configuration;
 import com.example.demo.DB;
 import com.example.demo.DevDB;
 import com.example.demo.ProdDB;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,5 +25,8 @@ public class AppConfig {
         return new ProdDB();
     }
 
-
+    @Bean
+    public ModelMapper getModelMapper() {
+        return new ModelMapper();
+    }
 }
