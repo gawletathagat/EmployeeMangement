@@ -12,6 +12,8 @@ package com.example.demo.controllers;
 import com.example.demo.dto.EmployeeDTO;
 import com.example.demo.services.EmployeeService;
 import jakarta.websocket.server.PathParam;
+import org.hibernate.service.spi.InjectService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -21,8 +23,10 @@ import java.util.List;
 @RequestMapping(path="/employee")
 public class EmployeeController {
 
+
     private final EmployeeService employeeService;
 
+    // Dependincy Injection
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
